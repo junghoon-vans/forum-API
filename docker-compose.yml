@@ -1,0 +1,20 @@
+version: '3'
+services:
+    postgres:
+        image: postgres:10
+        environment:
+            - POSTGRES_DB=developer
+            - POSTGRES_USER=developer
+            - POSTGRES_PASSWORD=devpassword
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - "127.0.0.1:25000:5432"
+    redis:
+        image: redis:latest
+        ports:
+            - "127.0.0.1:25100:6379"
+        command: redis-server --save ""
+volumes:
+    postgres-data:
+        driver: local
