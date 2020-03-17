@@ -8,6 +8,7 @@ class Config:
 	DEBUG = False
 	SQLALCHEMY_DATABASE_URI = postgres_local_base
 	SQLALCHEMY_TRACK_MODIFICATIONS = False
+	SWAGGER_UI_DOC_EXPANSION = 'list'
 
 class DevelopmentConfig(Config):
 	DEBUG = True
