@@ -9,5 +9,4 @@ def create_app(config_name):
     app.config.from_object(mode[config_name])
     app.app_context().push()
     db.init_app(app)
-    db.create_all()
     return app
