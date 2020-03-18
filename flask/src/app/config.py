@@ -1,5 +1,6 @@
 import os
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,6 +12,7 @@ postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
 	)
 
 engine = create_engine(postgres_local_base)
+Base = declarative_base()
 class Config:
 	SECRET_KEY = os.urandom(16)
 	DEBUG = False

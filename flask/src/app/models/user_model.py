@@ -1,9 +1,8 @@
 from . import bcrypt
-from sqlalchemy.ext.declarative import declarative_base
+from app.config import Base
 import sqlalchemy as db
 
 
-Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
 
