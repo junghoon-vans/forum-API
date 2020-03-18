@@ -11,7 +11,6 @@ postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
 	)
 
 engine = create_engine(postgres_local_base)
-
 class Config:
 	SECRET_KEY = os.urandom(16)
 	DEBUG = False
