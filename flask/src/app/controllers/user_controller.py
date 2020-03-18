@@ -4,9 +4,9 @@ from flask_restplus import Resource
 from app.dtos.user_dto import UserDto
 from app.services.user_service import register, get_user_list
 
+
 api = UserDto.api
 _user = UserDto.user
-
 
 @api.route('/')
 class User(Resource):
@@ -15,6 +15,8 @@ class User(Resource):
     def get(self):
         return get_user_list()
 
+@api.route('/register')
+class User(Resource):
     @api.response(201, 'User successfully created.')
     @api.doc('create a new user')
     @api.expect(_user, validate=True)
