@@ -1,13 +1,21 @@
-from . import db, bcrypt
+from . import bcrypt
+from sqlalchemy.ext.declarative import declarative_base
+import sqlalchemy as db
 
 
-class User(db.Model):
+Base = declarative_base()
+class User(Base):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fullname = db.Column(db.String(150), nullable=False, unique=True)
-    password = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(254), nullable=False, unique=True)
+    fullname = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False, unique=True)
+    
+    def __init__(self, fullname, password, email):
+        self.fullname = fullname
+        self.password = password
+        self.email = email
     
     @property
     def password_hash(self):

@@ -1,5 +1,8 @@
 import os
+from sqlalchemy import create_engine
+
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
 	user=os.environ['POSTGRES_USER'],
 	pw=os.environ['POSTGRES_PASSWORD'],
@@ -7,11 +10,11 @@ postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
 	db=os.environ['POSTGRES_DB']
 	)
 
+engine = create_engine(postgres_local_base)
+
 class Config:
 	SECRET_KEY = os.urandom(16)
 	DEBUG = False
-	SQLALCHEMY_DATABASE_URI = postgres_local_base
-	SQLALCHEMY_TRACK_MODIFICATIONS = False
 	SWAGGER_UI_DOC_EXPANSION = 'list'
 
 class DevelopmentConfig(Config):

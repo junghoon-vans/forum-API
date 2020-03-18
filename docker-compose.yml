@@ -7,7 +7,7 @@ services:
             - POSTGRES_DB=developer
             - POSTGRES_USER=developer
             - POSTGRES_PASSWORD=devpassword
-            - POSTGRES_URL=127.0.0.1:25000
+            - POSTGRES_URL=localhost:5432
         ports:
             - "5000:5000"
         networks:
@@ -39,7 +39,7 @@ services:
         ports:
             - "25000:5432"
         expose:
-            - "25000"
+            - "5432"
     redis:
         container_name: redis
         image: redis:latest

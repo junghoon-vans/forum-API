@@ -1,9 +1,12 @@
-from app.models import db
+from sqlalchemy.orm.session import sessionmaker
+from app.config import engine
 from app.models.user_model import User
 
+Session = sessionmaker(bind=engine)
+session = Session()
 
 def register(data):
-    user = User.query.filter_by(fullname=data['fullname']).first()
+    user = session.query(User).filter_by(fullname=data['fullname']).first()
     if not user:
         new_user = User(
             fullname = data['fullname'],
@@ -24,8 +27,8 @@ def register(data):
         return response, 409
 
 def get_user_list():
-    return User.query.all()
+    return session.query(User).all()
 
 def save(data):
-    db.session.add(data)
-    db.session.commit()
+    session.add(data)
+    session.commit()
