@@ -2,7 +2,7 @@ version: '3'
 services:
     flask:
         container_name: flask
-        image: flask
+        build: ./flask
         environment: 
             - POSTGRES_DB=developer
             - POSTGRES_USER=developer
@@ -13,21 +13,22 @@ services:
         networks:
             - backend
         depends_on:
-                - redis
-                - postgres
+            - redis
+            - postgres
         links:
             - redis
             - postgres
     nginx:
         container_name: nginx
-        image: nginx
+        build: ./nginx
         ports:
             - "80:80"
         networks:
             - backend
-        depends_on: 
+        depends_on:
             - flask
     postgres:
+        container_name: postgres
         image: postgres:10
         environment:
             - POSTGRES_DB=developer
@@ -40,6 +41,7 @@ services:
         expose:
             - "25000"
     redis:
+        container_name: redis
         image: redis:latest
         ports:
             - "25100:6379"
