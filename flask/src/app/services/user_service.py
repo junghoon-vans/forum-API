@@ -12,7 +12,6 @@ session = Session()
 redisSession = RedisSession()
 
 def register(data):
-    
     user = session.query(User).filter_by(fullname=data['fullname']).first()
     if not user:
         new_user = User(
@@ -59,7 +58,7 @@ def login(data):
         return response, 404
 
 def logout():
-    if 'session' in web_session:
+    if 'session' in web_session and redisSession.open_session(web_session['session']):
         redisSession.delete_session(web_session['session'])
         del web_session['session']
         response = {
