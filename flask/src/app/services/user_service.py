@@ -1,4 +1,4 @@
-from flask import session as flask_session
+from flask import session as web_session
 from sqlalchemy.orm.session import sessionmaker
 
 from utils.sqlalchemy import engine
@@ -34,15 +34,15 @@ def register(data):
 
 def login(data):
     user = session.query(User).filter_by(email=data['email']).first()
-    if not user:
+    if user:
         if user.verify_password(data['password']):
             redisSession = RedisSession()
             session_key = redisSession.create_session(user.fullname)
-            flask_session['session'] = session_key
+            web_session['session'] = session_key
 
             response = {
                     'status': 'success',
-                    'message': 'Successfully logged in'
+                    'message': 'Successfully Logged in'
                 }
             return response, 200
         else:
@@ -58,10 +58,20 @@ def login(data):
         }
         return response, 404
 
-
-
-def get_user_list():
-    return session.query(User).all()
+def logout():
+    if 'session' in web_session:
+        del web_session['session']
+        response = {
+            'status': 'success',
+            'message': 'Successfully Logged out'
+        }
+        return response, 200
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'Already Logged out'
+        }
+        return response, 404
 
 def save(data):
     session.add(data)

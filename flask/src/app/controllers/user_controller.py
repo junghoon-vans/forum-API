@@ -2,19 +2,13 @@ from flask import request
 from flask_restplus import Resource
 
 from app.dtos.user_dto import *
-from app.services.user_service import register, login, get_user_list
+from app.services.user_service import register, login, logout
 
 
 api = UserDto.api
 _user = UserDto.user
 _auth = UserDto.auth
 
-@api.route('/')
-class User(Resource):
-    @api.doc('list_of_users')
-    @api.marshal_list_with(_user, envelope='data')
-    def get(self):
-        return get_user_list()
 
 @api.route('/register')
 class Register(Resource):
@@ -32,3 +26,9 @@ class Login(Resource):
     def post(self):
         data = request.json
         return login(data)
+
+@api.route('/logout')
+class Logout(Resource):
+    @api.doc('logout user')
+    def get(self):
+        return logout()
