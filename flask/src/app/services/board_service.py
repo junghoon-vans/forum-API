@@ -12,27 +12,31 @@ session = Session()
 redisSession = RedisSession()
 
 def create_board(name):
-    user_id = redisSession.open_session(web_session['session'])
-    if user_id:
-        board = Board(
-            name = name,
-            master = user_id
-        )
-        save(board)
-        response = {
-            'status': 'success',
-            'message': 'Successfully Created'
-        }
-        return response, 201
+    if 'session' in web_session:
+        user_id = redisSession.open_session(web_session['session'])
+        if user_id:
+            board = Board(
+                name = name,
+                master = user_id
+            )
+            save(board)
+            response = {
+                'status': 'success',
+                'message': 'Successfully Created'
+            }
+            return response, 201
+        else:
+            response = {
+                'status': 'fail',
+                'message': 'Unauthorized'
+            }
+            return response, 401
     else:
         response = {
             'status': 'fail',
-            'message': 'Login Required'
+            'message': 'Required Login'
         }
         return response, 400
-
-def get_board_list():
-    return session.query(Board).all()
 
 def update_board(new_name, old_name):
     if 'session' in web_session:
@@ -58,6 +62,9 @@ def update_board(new_name, old_name):
             'message': 'Required Login'
         }
         return response, 400
+
+def get_board_list():
+    return session.query(Board).all()
 
 def save(data):
     session.add(data)
