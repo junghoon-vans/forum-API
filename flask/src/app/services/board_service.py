@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import sessionmaker
 from utils.sqlalchemy import engine
 from utils.redis import RedisSession
 
-from app.models import User, Board
+from app.models import Board
 
 
 Session = sessionmaker(bind=engine)
@@ -12,12 +12,11 @@ session = Session()
 redisSession = RedisSession()
 
 def create_board(name):
-    user_name = redisSession.open_session(web_session['session'])
-    if user_name:
-        user = session.query(User).filter_by(fullname=user_name).first()
+    user_id = redisSession.open_session(web_session['session'])
+    if user_id:
         board = Board(
             name = name,
-            master = user.id
+            master = user_id
         )
         save(board)
         response = {
@@ -37,19 +36,28 @@ def get_board_list():
 
 def update_board(new_name, old_name):
     if 'session' in web_session:
-        user_name = redisSession.open_session(web_session['session'])
-        if user_name:
-            user = session.query(User).filter_by(fullname=user_name).first()
-            board = session.query(Board).filter_by(name=old_name).first()
-            if board.master == user.id:
-                board.name = new_name
-                save(board)
-                response = {
-                    'status': 'success',
-                    'message': 'Successfully Changed'
-                }
-                return response, 200
-
+        user_id = redisSession.open_session(web_session['session'])
+        board = session.query(Board).filter_by(name=old_name).first()
+        if board.master == int(user_id):
+            board.name = new_name
+            save(board)
+            response = {
+                'status': 'success',
+                'message': 'Successfully Changed'
+            }
+            return response, 200
+        else:
+            response = {
+                'status': 'fail',
+                'message': 'Unauthorized'
+            }
+            return response, 401
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'Required Login'
+        }
+        return response, 400
 
 def save(data):
     session.add(data)

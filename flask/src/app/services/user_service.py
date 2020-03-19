@@ -36,7 +36,7 @@ def login(data):
     user = session.query(User).filter_by(email=data['email']).first()
     if user:
         if user.verify_password(data['password']):
-            session_key = redisSession.create_session(user.fullname)
+            session_key = redisSession.create_session(user.id)
             web_session['session'] = session_key
 
             response = {
