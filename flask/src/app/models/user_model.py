@@ -1,4 +1,4 @@
-from . import bcrypt
+from utils import bcrypt
 from utils.sqlalchemy import Base
 import sqlalchemy as db
 
@@ -13,16 +13,8 @@ class User(Base):
     
     def __init__(self, fullname, password, email):
         self.fullname = fullname
-        self.password = password
-        self.email = email
-    
-    @property
-    def password_hash(self):
-        return self.password
-        
-    @password_hash.setter
-    def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.email = email
 
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
