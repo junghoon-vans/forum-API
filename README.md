@@ -42,3 +42,47 @@ API Structure
 | URL | method | Usage |
 |-----|--------|-------|
 | /dashboard | GET | 모든 게시판에서 최근 n개의 글의 제목 가져옴 |
+
+How to run
+---
+
+- 루트 디렉토리에서 `docker-compose up` 명령어를 실행합니다.
+    > 설정은 docker-compose.yml과 Dockerfile에 정의되어 있습니다.
+- 이후 서버가 실행되면 4개의 도커 컨테이너가 실행됩니다.
+    > flask, nginx, postgres, redis
+
+Directory tree
+---
+
+        .
+        ├── README.md
+        ├── docker-compose.yml
+        ├── flask
+        │   ├── Dockerfile
+        │   ├── __init__.py
+        │   ├── requirements.txt
+        │   ├── src
+        │   │   ├── __init__.py
+        │   │   ├── alembic.ini
+        │   │   ├── app
+        │   │   │   ├── __init__.py
+        │   │   │   ├── config.py
+        │   │   │   ├── controllers
+        │   │   │   ├── dtos
+        │   │   │   ├── models
+        │   │   │   └── services
+        │   │   ├── manage.py
+        │   │   ├── migrations
+        │   │   │   ├── README
+        │   │   │   ├── __init__.py
+        │   │   │   ├── env.py
+        │   │   │   ├── script.py.mako
+        │   │   │   └── versions
+        │   │   └── utils
+        │   │       ├── __init__.py
+        │   │       ├── redis.py
+        │   │       └── sqlalchemy.py
+        │   └── uwsgi.ini
+        └── nginx
+            ├── Dockerfile
+            └── default.conf
