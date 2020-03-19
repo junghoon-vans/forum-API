@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from app.dtos.board_dto import *
-from app.services.board_service import create_board, get_board_list, update_board
+from app.services.board_service import create_board, get_board_list, update_board, delete_board
 
 api = BoardDto.api
 _board = BoardDto.board
@@ -28,3 +28,8 @@ class Detail(Resource):
     def put(self, board_name):
         data = request.json
         return update_board(data['name'], board_name)
+
+    @api.doc('delete the board')
+    def delete(self, board_name):
+        data = request.json
+        return delete_board(board_name)

@@ -63,6 +63,31 @@ def update_board(new_name, old_name):
         }
         return response, 400
 
+def delete_board(board_name):
+    if 'session' in web_session:
+        user_id = redisSession.open_session(web_session['session'])
+        board = session.query(Board).filter_by(name=board_name).first()
+        if board.master == int(user_id):
+            session.delete(board)
+            session.commit()
+            response = {
+                'status': 'success',
+                'message': 'Successfully Deleted'
+            }
+            return response, 200
+        else:
+            response = {
+                'status': 'fail',
+                'message': 'Unauthorized'
+            }
+            return response, 401
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'Required Login'
+        }
+        return response, 400
+
 def get_board_list():
     return session.query(Board).all()
 
