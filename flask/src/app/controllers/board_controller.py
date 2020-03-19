@@ -2,7 +2,7 @@ from flask import request
 from flask_restplus import Resource
 
 from app.dtos.board_dto import *
-from app.services.board_service import create, get_board_list
+from app.services.board_service import create_board, get_board_list, update_board
 
 api = BoardDto.api
 _board = BoardDto.board
@@ -14,9 +14,17 @@ class Main(Resource):
     @api.expect(_board, validate=True)
     def post(self):
         data = request.json
-        return create(data)
+        return create_board(data['name'])
 
     @api.doc('listview about board')
     @api.marshal_list_with(_board, envelope='data')
     def get(self):
         return get_board_list()
+
+@api.route('/<string:board_name>')
+class Detail(Resource):
+    @api.doc('update the board')
+    @api.expect(_board, validate=True)
+    def put(self, board_name):
+        data = request.json
+        return update_board(data['name'], board_name)
