@@ -1,5 +1,5 @@
 from flask import session as web_session
-from sqlalchemy.orm.session import sessionmaker
+from utils.sqlalchemy import engine, session, save, delete
 
 from utils.sqlalchemy import engine
 from utils.redis import RedisSession
@@ -7,8 +7,6 @@ from utils.redis import RedisSession
 from app.models import User
 
 
-Session = sessionmaker(bind=engine)
-session = Session()
 redisSession = RedisSession()
 
 def register(data):
@@ -72,7 +70,3 @@ def logout():
             'message': 'Already Logged out'
         }
         return response, 404
-
-def save(data):
-    session.add(data)
-    session.commit()

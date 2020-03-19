@@ -1,6 +1,6 @@
 from flask import jsonify
 from flask import session as web_session
-from sqlalchemy.orm.session import sessionmaker
+from utils.sqlalchemy import engine, session, save, delete
 
 from utils.sqlalchemy import engine
 from utils.redis import RedisSession
@@ -11,8 +11,6 @@ from .article_service import get_article_list
 import json
 
 
-Session = sessionmaker(bind=engine)
-session = Session()
 redisSession = RedisSession()
 
 def create_board(name):
@@ -102,11 +100,3 @@ def get_dashboard():
 
 def get_board_list():
     return session.query(Board).all()
-
-def save(data):
-    session.add(data)
-    session.commit()
-
-def delete(data):
-    session.delete(data)
-    session.commit()

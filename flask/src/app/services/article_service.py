@@ -1,14 +1,10 @@
 from flask import session as web_session
-from sqlalchemy.orm.session import sessionmaker
-
-from utils.sqlalchemy import engine
+from utils.sqlalchemy import engine, session, save, delete
 from utils.redis import RedisSession
 
 from app.models import Article
 
 
-Session = sessionmaker(bind=engine)
-session = Session()
 redisSession = RedisSession()
 
 def create_article(data, board_Name):
@@ -95,11 +91,3 @@ def get_article_one(board_Name, article_id):
 
 def get_article_list(board_Name):
     return session.query(Article).filter_by(board=board_Name).all()
-
-def save(data):
-    session.add(data)
-    session.commit()
-
-def delete(data):
-    session.delete(data)
-    session.commit()
