@@ -1,3 +1,4 @@
+from flask import session as flask_session
 from sqlalchemy.orm.session import sessionmaker
 
 from utils.sqlalchemy import engine
@@ -33,18 +34,30 @@ def register(data):
 
 def login(data):
     user = session.query(User).filter_by(email=data['email']).first()
-    if user.verify_password(data['password']):
-        redisSession = RedisSession()
-        session_key = redisSession.create_session(user.fullname)
-        cookie = 'login_cookie=%s' %session_key
+    if not user:
+        if user.verify_password(data['password']):
+            redisSession = RedisSession()
+            session_key = redisSession.create_session(user.fullname)
+            flask_session['session'] = session_key
 
-        response = {
-                'status': 'success',
-                'message': 'Successfully logged in'
+            response = {
+                    'status': 'success',
+                    'message': 'Successfully logged in'
+                }
+            return response, 200
+        else:
+            response = {
+            'status': 'fail',
+            'message': 'Invalid Password'
             }
-        return response, 201, {'Set-Cookie': cookie}
+            return response, 409
     else:
-        return response, 409
+        response = {
+            'status': 'fail',
+            'message': 'Undefined User'
+        }
+        return response, 404
+
 
 
 def get_user_list():

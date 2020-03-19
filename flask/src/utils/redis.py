@@ -5,11 +5,12 @@ from uuid import uuid4
 
 class RedisSession:
     prefix = 'session_key:'
-    host = os.environ['REDIS_URL']
+    host = os.environ['REDIS_HOST']
+    port = os.environ['REDIS_PORT']
     timeout = 3600
 
     def __init__(self):
-        self.db = Redis(self.host, 25100)
+        self.db = Redis(self.host, self.port)
 
     def create_session(self, user_name):
         session_key = str(uuid4())
