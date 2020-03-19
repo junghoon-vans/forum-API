@@ -23,3 +23,6 @@ class RedisSession:
         if user_name is not None:
             self.db.expire(self.prefix+session_key, self.timeout)
         return user_name
+    
+    def delete_session(self, session_key):
+        self.db.delete(self.prefix+session_key)

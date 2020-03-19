@@ -9,6 +9,7 @@ from app.models.user_model import User
 
 Session = sessionmaker(bind=engine)
 session = Session()
+redisSession = RedisSession()
 
 def register(data):
     
@@ -36,7 +37,6 @@ def login(data):
     user = session.query(User).filter_by(email=data['email']).first()
     if user:
         if user.verify_password(data['password']):
-            redisSession = RedisSession()
             session_key = redisSession.create_session(user.fullname)
             web_session['session'] = session_key
 
@@ -60,6 +60,7 @@ def login(data):
 
 def logout():
     if 'session' in web_session:
+        redisSession.delete_session(web_session['session'])
         del web_session['session']
         response = {
             'status': 'success',
