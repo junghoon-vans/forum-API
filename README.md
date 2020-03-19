@@ -41,7 +41,7 @@ API Structure
 
 | URL | method | Usage |
 |-----|--------|-------|
-| /dashboard | GET | 모든 게시판에서 최근 n개의 글의 제목 가져옴 |
+| /board/all | GET | 모든 게시판에서 최근 n개의 글의 제목 가져옴 |
 
 How to run
 ---
@@ -67,9 +67,8 @@ Directory tree
         │   │   ├── app
         │   │   │   ├── __init__.py
         │   │   │   ├── config.py
+        │   │   │   ├── models.py
         │   │   │   ├── controllers
-        │   │   │   ├── dtos
-        │   │   │   ├── models
         │   │   │   └── services
         │   │   ├── manage.py
         │   │   ├── migrations
@@ -81,6 +80,7 @@ Directory tree
         │   │   └── utils
         │   │       ├── __init__.py
         │   │       ├── redis.py
+        │   │       ├── restplus.py      
         │   │       └── sqlalchemy.py
         │   └── uwsgi.ini
         └── nginx
