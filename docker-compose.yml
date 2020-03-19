@@ -8,6 +8,7 @@ services:
             - POSTGRES_USER=developer
             - POSTGRES_PASSWORD=devpassword
             - POSTGRES_URL=postgres
+            - REDIS_URL=redis
         ports:
             - "5000:5000"
         networks:
@@ -52,6 +53,8 @@ services:
         ports:
             - "25100:6379"
         command: redis-server --save ""
+        networks:
+            - db_network
         restart: always
 networks:
     web_network:
