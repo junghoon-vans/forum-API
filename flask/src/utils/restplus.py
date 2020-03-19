@@ -20,6 +20,9 @@ class BoardDto():
 
 class ArticleDto():
     api = Namespace('article', description='article related operations')
+    title = api.model('article', {
+        'title': fields.String(required=True, description='article title'),
+    })
     article = api.model('article', {
         'title': fields.String(required=True, description='article title'),
         'content': fields.String(required=True, description='article content'),

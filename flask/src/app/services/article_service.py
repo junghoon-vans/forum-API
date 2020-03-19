@@ -11,7 +11,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 redisSession = RedisSession()
 
-def create_board(data, board_Name):
+def create_article(data, board_Name):
     if 'session' in web_session:
         user_id = redisSession.open_session(web_session['session'])
         if user_id:
@@ -39,6 +39,33 @@ def create_board(data, board_Name):
             'message': 'Required Login'
         }
         return response, 400
+
+def update_article(data, board_Name, article_id):
+    if 'session' in web_session:
+        user_id = redisSession.open_session(web_session['session'])
+        article = session.query(Article).filter_by(id=article_id).first()
+        if article.id == int(user_id):
+            article.title = data['title']
+            article.content = data['content']
+            save(article)
+            response = {
+                'status': 'success',
+                'message': 'Successfully Created'
+            }
+            return response, 201
+        else:
+            response = {
+                'status': 'fail',
+                'message': 'Unauthorized'
+            }
+            return response, 401
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'Required Login'
+        }
+        return response, 400
+
 
 def get_article_list(board_Name):
     return session.query(Article).filter_by(board=board_Name).all()
