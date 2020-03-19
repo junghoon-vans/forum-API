@@ -18,3 +18,10 @@ class User(Base):
 
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
+
+class Board(Base):
+    __tablename__ = 'board'
+
+    name = db.Column(db.String, primary_key=True)
+    master = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.orm.relationship("User")

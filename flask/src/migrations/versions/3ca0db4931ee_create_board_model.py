@@ -1,8 +1,8 @@
 """Create Board Model
 
-Revision ID: 1f6b0ef1ca2e
+Revision ID: 3ca0db4931ee
 Revises: 3c7620131de9
-Create Date: 2020-03-19 17:53:26.702586
+Create Date: 2020-03-19 18:09:28.704799
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1f6b0ef1ca2e'
+revision = '3ca0db4931ee'
 down_revision = '3c7620131de9'
 branch_labels = None
 depends_on = None

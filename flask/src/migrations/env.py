@@ -21,6 +21,7 @@ sys.path.insert(0, os.path.dirname(
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
+from app.models import *
 from utils.sqlalchemy import Base, postgres_local_base
 target_metadata = Base.metadata
 
