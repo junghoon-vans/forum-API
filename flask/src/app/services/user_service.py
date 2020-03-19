@@ -4,7 +4,7 @@ from sqlalchemy.orm.session import sessionmaker
 from utils.sqlalchemy import engine
 from utils.redis import RedisSession
 
-from app.models.user_model import User
+from app.models import User
 
 
 Session = sessionmaker(bind=engine)
