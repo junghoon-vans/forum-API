@@ -1,20 +1,22 @@
+import os
 from redis import Redis
 from uuid import uuid4
 
 
-class session:
+class RedisSession:
     prefix = 'session_key:'
     host = os.environ['REDIS_URL']
     timeout = 3600
 
     def __init__(self):
-        self.db = Redis(host)
+        self.db = Redis(self.host, 25100)
 
-    def create(self, user_name):
+    def create_session(self, user_name):
         session_key = str(uuid4())
-        self.db.setex(self.prefix+session_key, user_name, self.timeout)
+        self.db.setex(self.prefix+session_key, self.timeout, user_name)
+        return session_key
 
-    def open(self, session_key):
+    def open_session(self, session_key):
         user_name = self.db.get(self.prefix+session_key)
 
         if user_name is not None:
