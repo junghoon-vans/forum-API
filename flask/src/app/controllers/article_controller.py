@@ -35,6 +35,6 @@ class Detail(Resource):
         data = request.json
         return update_article(data, board_Name, article_id)
 
-    @api.doc('delete the board')
+    @api.doc('delete the article')
     def delete(self, board_Name, article_id):
         return delete_article(board_Name, article_id)

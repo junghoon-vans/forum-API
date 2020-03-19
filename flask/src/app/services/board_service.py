@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask import session as web_session
 from sqlalchemy.orm.session import sessionmaker
 
@@ -5,6 +6,9 @@ from utils.sqlalchemy import engine
 from utils.redis import RedisSession
 
 from app.models import Board
+from .article_service import get_article_list
+
+import json
 
 
 Session = sessionmaker(bind=engine)
@@ -68,8 +72,7 @@ def delete_board(board_name):
         user_id = redisSession.open_session(web_session['session'])
         board = session.query(Board).filter_by(name=board_name).first()
         if board.master == int(user_id):
-            session.delete(board)
-            session.commit()
+            delete(board)
             response = {
                 'status': 'success',
                 'message': 'Successfully Deleted'
@@ -88,9 +91,22 @@ def delete_board(board_name):
         }
         return response, 400
 
+def get_dashboard():
+    data = dict()
+    for board in get_board_list():
+        article_list = list()
+        for article in get_article_list(board.name):
+            article_list.append(article.title)
+        data[board.name] = article_list
+    return jsonify(data)
+
 def get_board_list():
     return session.query(Board).all()
 
 def save(data):
     session.add(data)
+    session.commit()
+
+def delete(data):
+    session.delete(data)
     session.commit()
