@@ -1,5 +1,5 @@
 from . import bcrypt
-from app.config import Base
+from utils.sqlalchemy import Base
 import sqlalchemy as db
 
 

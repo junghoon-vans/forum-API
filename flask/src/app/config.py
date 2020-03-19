@@ -1,21 +1,6 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from redis import Redis
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-
-postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
-	user=os.environ['POSTGRES_USER'],
-	pw=os.environ['POSTGRES_PASSWORD'],
-	url=os.environ['POSTGRES_URL'],
-	db=os.environ['POSTGRES_DB']
-	)
-
-engine = create_engine(postgres_local_base)
-Base = declarative_base()
-
-redis = Redis(os.environ['REDIS_URL'])
 
 class Config:
 	SECRET_KEY = os.urandom(16)

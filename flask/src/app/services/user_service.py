@@ -1,5 +1,5 @@
 from sqlalchemy.orm.session import sessionmaker
-from app.config import engine
+from utils.sqlalchemy import engine
 from app.models.user_model import User
 
 Session = sessionmaker(bind=engine)
