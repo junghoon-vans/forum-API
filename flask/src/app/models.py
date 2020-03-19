@@ -7,7 +7,7 @@ class User(Base):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fullname = db.Column(db.String, nullable=False, unique=True)
+    fullname = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     
