@@ -22,20 +22,20 @@ API Structure
 
 | URL | method | Usage |
 |-----|--------|-------|
-| / | GET | 게시판 목록 조회 |
-| / | POST | 게시판 생성 |
-| /\<str:board_name\> | PUT | 게시판 이름 변경 |
-| /\<str:board_name\> | DELETE | 게시판 제거 |
+| /board/ | GET | 게시판 목록 조회 |
+| /board/ | POST | 게시판 생성 |
+| /board/\<str:board_name\> | PUT | 게시판 이름 변경 |
+| /board/\<str:board_name\> | DELETE | 게시판 제거 |
 
 ### BoardArticle API
 
 | URL | method | Usage |
 |-----|--------|-------|
-| /\<str:board_name\> | GET | 글 목록 조회 |
-| /\<str:board_name\> | POST | 글 생성 |
-| /\<str:board_name\>/\<int:article_id> | GET | 글 내용 조회 |
-| /\<str:board_name\>/\<int:article_id> | PUT | 글 제목 혹은 내용 수정 |
-| /\<str:board_name\>/\<int:article_id> | DELETE | 글 제거 |
+| /board/\<str:board_name\> | GET | 글 목록 조회 |
+| /board/\<str:board_name\> | POST | 글 생성 |
+| /board/\<str:board_name\>/\<int:article_id> | GET | 글 내용 조회 |
+| /board/\<str:board_name\>/\<int:article_id> | PUT | 글 제목 혹은 내용 수정 |
+| /board/\<str:board_name\>/\<int:article_id> | DELETE | 글 제거 |
 
 ### Dashboard API
 
