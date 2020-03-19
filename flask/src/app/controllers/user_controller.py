@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 
-from app.dtos.user_dto import *
+from utils.restplus import UserDto
 from app.services.user_service import register, login, logout
 
 

@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 
-from app.dtos.board_dto import *
+from utils.restplus import BoardDto
 from app.services.board_service import create_board, get_board_list, update_board, delete_board
 
 api = BoardDto.api
