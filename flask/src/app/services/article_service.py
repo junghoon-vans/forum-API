@@ -20,71 +20,86 @@ def create_article(data, board_Name):
             save(article)
             response = {
                 'status': 'success',
-                'message': 'Successfully Created'
+                'message': 'Create article successfully'
             }
             return response, 201
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Permission denied'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Login required'
         }
-        return response, 400
+        return response, 403
+    
 
 def update_article(data, board_Name, article_id):
-    if 'session' in web_session:
-        user_id = redisSession.open_session(web_session['session'])
-        article = get_article_one(board_Name, article_id)
-        if article.writer == int(user_id):
-            article.title = data['title']
-            article.content = data['content']
-            save(article)
-            response = {
-                'status': 'success',
-                'message': 'Successfully Created'
-            }
-            return response, 201
+    article = get_article_one(board_Name, article_id)
+    if article:
+        if 'session' in web_session:
+            user_id = redisSession.open_session(web_session['session'])
+            if article.writer == int(user_id):
+                article.title = data['title']
+                article.content = data['content']
+                save(article)
+                response = {
+                    'status': 'success',
+                    'message': 'Update article successfully'
+                }
+                return response, 201
+            else:
+                response = {
+                    'status': 'fail',
+                    'message': 'Permission denied'
+                }
+                return response, 403
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Login required'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Undefined article'
         }
-        return response, 400
+        return response, 404
 
 def delete_article(board_Name, article_id):
-    if 'session' in web_session:
-        user_id = redisSession.open_session(web_session['session'])
-        article = get_article_one(board_Name, article_id)
-        if article.writer == int(user_id):
-            delete(article)
-            response = {
-                'status': 'success',
-                'message': 'Successfully Deleted'
-            }
-            return response, 200
+    article = get_article_one(board_Name, article_id)
+    if article:
+        if 'session' in web_session:
+            user_id = redisSession.open_session(web_session['session'])
+            if article.writer == int(user_id):
+                delete(article)
+                response = {
+                    'status': 'success',
+                    'message': 'Delete article successfully'
+                }
+                return response, 200
+            else:
+                response = {
+                    'status': 'fail',
+                    'message': 'Permission denied'
+                }
+                return response, 403
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Login required'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Undefined article'
         }
-        return response, 400
+        return response, 404
 
 def get_article_one(board_Name, article_id):
     return session.query(Article).filter_by(board=board_Name, id=article_id).first()

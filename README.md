@@ -5,8 +5,6 @@ forum-API
 ![Postgres](https://img.shields.io/badge/PostgreSQL-10.0-blue.svg)
 ![Redis](https://img.shields.io/badge/Redis-latest-red.svg)
 
-flask-based bulletin board service API
-
 실행 방법
 ---
 

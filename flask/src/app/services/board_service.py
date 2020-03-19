@@ -14,80 +14,105 @@ import json
 redisSession = RedisSession()
 
 def create_board(name):
-    if 'session' in web_session:
-        user_id = redisSession.open_session(web_session['session'])
-        if user_id:
-            board = Board(
-                name = name,
-                master = user_id
-            )
-            save(board)
-            response = {
-                'status': 'success',
-                'message': 'Successfully Created'
-            }
-            return response, 201
+    board = session.query(Board).filter_by(name=name).first()
+    if not board:
+        if 'session' in web_session:
+            user_id = redisSession.open_session(web_session['session'])
+            if user_id:
+                board = Board(
+                    name = name,
+                    master = user_id
+                )
+                save(board)
+                response = {
+                    'status': 'success',
+                    'message': 'Create board successfully'
+                }
+                return response, 201
+            else:
+                response = {
+                    'status': 'fail',
+                    'message': 'Permission denied'
+                }
+                return response, 403
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Login required'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Already existed board'
         }
-        return response, 400
+        return response, 409
+
 
 def update_board(new_name, old_name):
-    if 'session' in web_session:
-        user_id = redisSession.open_session(web_session['session'])
-        board = session.query(Board).filter_by(name=old_name).first()
-        if board.master == int(user_id):
-            board.name = new_name
-            save(board)
-            response = {
-                'status': 'success',
-                'message': 'Successfully Changed'
-            }
-            return response, 200
+    board = session.query(Board).filter_by(name=name).first()
+    if board:
+        if 'session' in web_session:
+            user_id = redisSession.open_session(web_session['session'])
+            board = session.query(Board).filter_by(name=old_name).first()
+            if board.master == int(user_id):
+                board.name = new_name
+                save(board)
+                response = {
+                    'status': 'success',
+                    'message': 'Update board successfully'
+                }
+                return response, 200
+            else:
+                response = {
+                    'status': 'fail',
+                    'message': 'Permission denied'
+                }
+                return response, 403
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Login required'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Undefined board'
         }
-        return response, 400
+        return response, 404
 
 def delete_board(board_name):
-    if 'session' in web_session:
-        user_id = redisSession.open_session(web_session['session'])
-        board = session.query(Board).filter_by(name=board_name).first()
-        if board.master == int(user_id):
-            delete(board)
-            response = {
-                'status': 'success',
-                'message': 'Successfully Deleted'
-            }
-            return response, 200
+    board = session.query(Board).filter_by(name=name).first()
+    if board:
+        if 'session' in web_session:
+            user_id = redisSession.open_session(web_session['session'])
+            board = session.query(Board).filter_by(name=board_name).first()
+            if board.master == int(user_id):
+                delete(board)
+                response = {
+                    'status': 'success',
+                    'message': 'Delete board successfully'
+                }
+                return response, 200
+            else:
+                response = {
+                    'status': 'fail',
+                    'message': 'Permission denied'
+                }
+                return response, 403
         else:
             response = {
                 'status': 'fail',
-                'message': 'Unauthorized'
+                'message': 'Login required'
             }
-            return response, 401
+            return response, 403
     else:
         response = {
             'status': 'fail',
-            'message': 'Required Login'
+            'message': 'Undefined board'
         }
-        return response, 400
+        return response, 404
 
 def get_dashboard(page):
     data = dict()
