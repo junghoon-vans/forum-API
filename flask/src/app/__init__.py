@@ -5,7 +5,7 @@ from app.config import mode
 
 from app.controllers.user_controller import api as user_ns
 from app.controllers.board_controller import api as board_ns
-
+from app.controllers.article_controller import api as article_ns
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -19,5 +19,6 @@ def create_app(config_name):
           )
     api.add_namespace(user_ns, path='/user')
     api.add_namespace(board_ns, path='/board')
+    api.add_namespace(article_ns, path='/board')
 
     return app

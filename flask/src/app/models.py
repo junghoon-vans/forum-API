@@ -24,18 +24,17 @@ class Board(Base):
 
     name = db.Column(db.String, primary_key=True)
     master = db.Column(db.Integer, db.ForeignKey('user.id'))
-    articles = db.Column(db.Integer, db.ForeignKey('article.id'))  
 
-    db.orm.relationship("Article", back_populates="board")
     db.orm.relationship("User")
 
 class Article(Base):
     __tablename__ = 'article'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    board = db.Column(db.String, db.ForeignKey('board.name')) 
     writer = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
 
-    db.orm.relationship("Board", back_populates="article")
+    db.orm.relationship("Board")
     db.orm.relationship("User")
