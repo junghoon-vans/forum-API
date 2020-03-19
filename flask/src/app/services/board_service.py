@@ -32,6 +32,9 @@ def create(data):
         }
         return response, 400
 
+def get_board_list():
+    return session.query(Board).all()
+
 def save(data):
     session.add(data)
     session.commit()
