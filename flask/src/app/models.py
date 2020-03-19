@@ -1,3 +1,4 @@
+from datetime import datetime
 from utils import bcrypt
 from utils.sqlalchemy import Base
 import sqlalchemy as db
@@ -35,6 +36,7 @@ class Article(Base):
     writer = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
+    pub_date = db.Column(db.DateTime, default=datetime.now)
 
     db.orm.relationship("Board")
     db.orm.relationship("User")
