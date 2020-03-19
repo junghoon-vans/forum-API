@@ -89,5 +89,9 @@ def delete_article(board_Name, article_id):
 def get_article_one(board_Name, article_id):
     return session.query(Article).filter_by(board=board_Name, id=article_id).first()
 
-def get_article_list(board_Name):
-    return session.query(Article).filter_by(board=board_Name).all()
+def get_article(board_Name):
+    return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[0:5]
+
+def get_article_list(board_Name, page):
+    offset = 5
+    return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[page*5-offset:offset*page]

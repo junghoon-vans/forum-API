@@ -11,16 +11,18 @@ _article = ArticleDto.article
 
 @api.route('/<string:board_Name>')
 class Main(Resource):
-    @api.doc('listview about article')
-    @api.marshal_list_with(_title)
-    def get(self, board_Name):
-        return get_article_list(board_Name)
-    
     @api.doc('create a new article')
     @api.expect(_article, validate=True)
     def post(self, board_Name):
         data = request.json
         return create_article(data, board_Name)
+
+@api.route('/<string:board_Name>/<int:page>')
+class Main(Resource):
+    @api.doc('listview about article')
+    @api.marshal_list_with(_title)
+    def get(self, board_Name, page):
+        return get_article_list(board_Name, page)
 
 @api.route('/<string:board_Name>/<int:article_id>')
 class Detail(Resource):

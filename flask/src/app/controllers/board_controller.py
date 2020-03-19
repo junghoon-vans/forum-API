@@ -9,17 +9,19 @@ _board = BoardDto.board
 
 
 @api.route('/')
-class Main(Resource):
+class CreateBoard(Resource):
     @api.doc('create a new board')
     @api.expect(_board, validate=True)
     def post(self):
         data = request.json
         return create_board(data['name'])
 
+@api.route('/<int:page>')
+class BoardList(Resource):
     @api.doc('listview about board')
     @api.marshal_list_with(_board, envelope='data')
-    def get(self):
-        return get_board_list()
+    def get(self, page):
+        return get_board_list(page)
 
 @api.route('/<string:board_name>')
 class Detail(Resource):
@@ -34,8 +36,8 @@ class Detail(Resource):
         data = request.json
         return delete_board(board_name)
 
-@api.route('/all')
+@api.route('/all/<int:page>')
 class Dashboard(Resource):
     @api.doc('show dashboard')
-    def get(self):
-        return get_dashboard()
+    def get(self, page):
+        return get_dashboard(page)

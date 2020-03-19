@@ -6,7 +6,7 @@ from utils.sqlalchemy import engine
 from utils.redis import RedisSession
 
 from app.models import Board
-from .article_service import get_article_list
+from .article_service import get_article
 
 import json
 
@@ -89,14 +89,15 @@ def delete_board(board_name):
         }
         return response, 400
 
-def get_dashboard():
+def get_dashboard(page):
     data = dict()
-    for board in get_board_list():
+    for board in get_board_list(page):
         article_list = list()
-        for article in get_article_list(board.name):
+        for article in get_article(board.name):
             article_list.append(article.title)
         data[board.name] = article_list
     return jsonify(data)
 
-def get_board_list():
-    return session.query(Board).all()
+def get_board_list(page):
+    offset = 5
+    return session.query(Board).order_by(Board.name)[page*5-offset:offset*page]
