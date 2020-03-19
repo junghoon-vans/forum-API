@@ -10,7 +10,7 @@ class RedisSession:
     timeout = 3600
 
     def __init__(self):
-        self.db = Redis(self.host, self.port)
+        self.db = Redis(self.host, self.port, charset="utf-8", decode_responses=True)
 
     def create_session(self, user_name):
         session_key = str(uuid4())
