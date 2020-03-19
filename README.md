@@ -7,7 +7,7 @@ forum-API
 
 flask-based bulletin board service API
 
-API Structure
+API 구조
 ---
 
 ### User API
@@ -43,15 +43,62 @@ API Structure
 |-----|--------|-------|
 | /board/all | GET | 모든 게시판에서 최근 n개의 글의 제목 가져옴 |
 
-How to run
+실행 방법
 ---
 
-- 루트 디렉토리에서 `docker-compose up` 명령어를 실행합니다.
-    > 설정은 docker-compose.yml과 Dockerfile에 정의되어 있습니다.
-- 이후 서버가 실행되면 4개의 도커 컨테이너가 실행됩니다.
-    > flask, nginx, postgres, redis
+```bash
+docker-compose up
+```
 
-Directory tree
+루트 디렉토리에서 위 명령어로 서버를 실행합니다.
+
+
+- 이후 웹 브라우저에서 `127.0.0.1`로 접속해서 API call을 테스트하실 수 있습니다.
+- `Swagger UI` 적용을 위해 `flask-restplus`를 사용했습니다.
+
+### 주의할 점
+- 콘솔에서 직접 API call을 테스트할 수 있습니다만, 사용자를 특정해야 하는 요청에는 `세션쿠키`를 전송해야만 합니다.
+-  `세션쿠키`는 로그인 요청 시 HTTP 응답 헤더의 `Set-Cookie`에서 확인할 수 있습니다.
+
+    <details><summary>콘솔 사용 예시</summary>
+    
+    로그인 시
+    ```
+    http 127.0.0.1/user/login 'email=<email>' 'password=<password>'  HTTP/1.0 200 OK
+    Content-Length: 69
+    Content-Type: application/json
+    Date: Thu, 19 Mar 2020 18:46:19 GMT
+    Server: Werkzeug/0.16.1 Python/3.7.6
+    Set-Cookie: session=eyJzZXNzaW9uIjoiNzU4MDFiZGYtNTkyOC00YjYwLTljZmMtMWJkNDAwMmZmYzU3In0.XnO9-w.JoWYrJwfpgPzxmUj4SEfkUYYVo4; HttpOnly; Path=/
+    Vary: Cookie
+
+    {
+        "message": "Successfully Logged in",
+        "status": "success"
+    }
+    ```
+
+    로그아웃 시
+    ```bash
+    # httpie로 요청 시
+    http 127.0.0.1/user/logout 'Cookie:session=eyJzZXNzaW9uIjoiNzU4MDFiZGYtNTkyOC00YjYwLTljZmMtMWJkNDAwMmZmYzU3In0.XnO9-w.JoWYrJwfpgPzxmUj4SEfkUYYVo4'
+
+    HTTP/1.0 200 OK
+    Content-Length: 70
+    Content-Type: application/json
+    Date: Thu, 19 Mar 2020 18:59:22 GMT
+    Server: Werkzeug/0.16.1 Python/3.7.6
+    Set-Cookie: session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/    
+    {
+        "message": "Successfully Logged out",
+        "status": "success"
+    }
+    ```
+
+</details>
+
+
+디렉터리 구조
 ---
 
         .
