@@ -55,8 +55,15 @@ def update_board(new_name, old_name):
             if 'session' in web_session:
                 user_id = redisSession.open_session(web_session['session'])
                 if board.master == int(user_id):
-                    board.name = new_name
+                    new_board = Board(
+                        name = new_name,
+                        master = user_id
+                    )
+                    for article in board.articles:
+                        article.board = new_name
+                    save(new_board)
                     save(board)
+                    delete(board)
                     response = {
                         'status': 'success',
                         'message': 'Update board successfully'
