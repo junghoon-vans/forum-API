@@ -5,7 +5,6 @@ from utils.restplus import ArticleDto
 from app.api.article_api import *
 
 api = ArticleDto.api
-_title = ArticleDto.title
 _article = ArticleDto.article
 
 
@@ -23,7 +22,7 @@ class CreateArticle(Resource):
 @api.route('/<string:board_Name>/<int:page>')
 class ArticleList(Resource):
     @api.doc('listview about article')
-    @api.marshal_list_with(_title)
+    @api.marshal_list_with(_article)
     def get(self, board_Name, page):
         return get_article_list(board_Name, page)
 

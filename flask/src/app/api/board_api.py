@@ -8,8 +8,6 @@ from utils.redis import RedisSession
 from app.models import Board
 from .article_api import get_article
 
-import json
-
 
 redisSession = RedisSession()
 
