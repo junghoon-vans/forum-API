@@ -26,17 +26,17 @@ class Board(Base):
     name = db.Column(db.String, primary_key=True)
     master = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    articles = db.orm.relationship("Article", cascade="all, delete, save-update, delete-orphan")
     db.orm.relationship("User")
 
 class Article(Base):
     __tablename__ = 'article'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    board = db.Column(db.String, db.ForeignKey('board.name')) 
+    board = db.Column(db.String, db.ForeignKey('board.name'),) 
     writer = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
     pub_date = db.Column(db.DateTime, default=datetime.now)
 
-    db.orm.relationship("Board")
     db.orm.relationship("User")
