@@ -59,7 +59,36 @@ docker-compose up
     }
     ```
 
+### 로컬 환경에서 flask 서버 실행
+
+flask 서버를 별도로 로컬에서 구동하기 위해서는 우선 패키지 설치를 해야 합니다. 
+- 루트 디렉토리에 `venv` 생성 및 실행
+- flask 디렉토리의 `requirements.txt`에 정의된 패키지 설치
+
+또한 실행과 DB 연결에 필요한 환경변수도 설정해주어야 합니다.
+
+<details><summary>환경변수 설정</summary>
+
+    # DB 관련 변수
+    export POSTGRES_DB="developer"
+    export POSTGRES_USER="developer"
+    export POSTGRES_PASSWORD="devpassword"
+    export POSTGRES_URL="localhost:25000"
+
+    export REDIS_HOST="localhost"
+    export REDIS_PORT="25100"
+
+    # 개발 모드
+    export FLASK_CONFIG="dev"
 </details>
+
+DB 마이그레이션의 경우 `alembic`을 사용하시면 됩니다. 명령어는 다음과 같습니다.
+
+```bash
+alembic revision --autogenerate -m "message" # 마이그레이션 생성
+alembic upgrade head # 마이그레이션 적용
+```
+> [env.py](flask\src\migrations\env.py)파일을 수정하여 [models.py](flask\src\app\models.py)와 연동하여 마이그레이션 파일을 생성하도록 설정하였습니다. 
 
 API 구조
 ---
