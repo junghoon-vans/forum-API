@@ -18,6 +18,9 @@ class BoardDto():
         'name': fields.String(required=True, description='board name'),
     })
 
+class DashBoardDto():
+    api = Namespace('dashboard', description='dashboard related operation')
+
 class ArticleDto():
     api = Namespace('article', description='article related operations')
     title = api.model('article', {

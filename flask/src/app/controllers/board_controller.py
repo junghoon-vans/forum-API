@@ -1,10 +1,11 @@
 from flask import request
 from flask_restplus import Resource
 
-from utils.restplus import BoardDto
+from utils.restplus import BoardDto, DashBoardDto
 from app.services.board_service import *
 
 api = BoardDto.api
+api2 = DashBoardDto.api
 _board = BoardDto.board
 
 
@@ -34,6 +35,7 @@ class BoardList(Resource):
 class Board(Resource):
     @api.doc('update the board')
     @api.response(200, 'Update board successfully')
+    @api.response(409, 'Already existed board')
     @api.expect(_board, validate=True)
     def put(self, board_name):
         data = request.json
@@ -45,8 +47,8 @@ class Board(Resource):
         data = request.json
         return delete_board(board_name)
 
-@api.route('/all/<int:page>')
+@api2.route('/all/<int:page>')
 class Dashboard(Resource):
-    @api.doc('show dashboard')
+    @api2.doc('show dashboard')
     def get(self, page):
         return get_dashboard(page)
