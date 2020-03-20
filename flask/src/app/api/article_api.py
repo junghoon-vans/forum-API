@@ -3,7 +3,7 @@ from flask import session as web_session
 from utils.sqlalchemy import engine, session, save, delete
 from utils.redis import RedisSession
 
-from app.models import Article
+from app.models import Article, User
 
 
 redisSession = RedisSession()
@@ -104,11 +104,12 @@ def delete_article(board_Name, article_id):
 
 def get_article_one(board_Name, article_id):
     article = session.query(Article).filter_by(board=board_Name, id=article_id).first()
+    user = session.query(User).filter_by(id=article.writer).first()
     if article:
         data = {
             'title': article.title,
             'pub_date': article.pub_date,
-            'writer': article.writer,
+            'writer': user.fullname,
             'content': article.content,
         }
         return jsonify(data)
