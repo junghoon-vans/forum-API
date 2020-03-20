@@ -51,29 +51,37 @@ def create_board(name):
 
 def update_board(new_name, old_name):
     board = session.query(Board).filter_by(name=old_name).first()
+    new_board = session.query(Board).filter_by(name=new_name).first()
     if board:
-        if 'session' in web_session:
-            user_id = redisSession.open_session(web_session['session'])
-            if board.master == int(user_id):
-                board.name = new_name
-                save(board)
-                response = {
-                    'status': 'success',
-                    'message': 'Update board successfully'
-                }
-                return response, 200
+        if not new_board:
+            if 'session' in web_session:
+                user_id = redisSession.open_session(web_session['session'])
+                if board.master == int(user_id):
+                    board.name = new_name
+                    save(board)
+                    response = {
+                        'status': 'success',
+                        'message': 'Update board successfully'
+                    }
+                    return response, 200
+                else:
+                    response = {
+                        'status': 'fail',
+                        'message': 'Permission denied'
+                    }
+                    return response, 401
             else:
                 response = {
                     'status': 'fail',
-                    'message': 'Permission denied'
+                    'message': 'Login required'
                 }
-                return response, 401
+                return response, 403
         else:
             response = {
-                'status': 'fail',
-                'message': 'Login required'
+            'status': 'fail',
+            'message': 'Already existed board'
             }
-            return response, 403
+            return response, 409
     else:
         response = {
             'status': 'fail',
