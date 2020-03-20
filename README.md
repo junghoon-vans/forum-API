@@ -128,9 +128,7 @@ API 구조
 | /board/\<str:board_name\>/detail/\<int:article_id> | GET | 글 내용 조회 | |
 | /board/\<str:board_name\>/\<int:page\> | GET | 글 목록 조회 | |
 
-> Session Cookie 필드에 필요로 작성된 부분은 API 요청시 `세션쿠키`를 함께 전송해야 하는 경우임
-
-> page인자는 페이지네이션을 위한 것임
+> Session Cookie 필드에 필요로 작성된 부분은 API 요청시 `세션쿠키`를 함께 전송해야 하는 경우이며, <int:page>는 페이지네이션을 위한 인자입니다.
 
 세션
 ---
@@ -190,6 +188,8 @@ redis DB를 활용하여 세션 기능을 구현하였습니다. 사용자 로�
         │   │       ├── restplus.py      
         │   │       └── sqlalchemy.py
         │   └── uwsgi.ini
-        └── nginx
-            ├── Dockerfile
-            └── default.conf
+        ├── nginx
+        │   ├── Dockerfile
+        │   └── default.conf
+        └── postgres
+            └── init.sql
