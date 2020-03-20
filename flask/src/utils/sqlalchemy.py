@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm.session import sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
@@ -13,10 +13,9 @@ postgres_local_base = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(
 	)
 
 engine = create_engine(postgres_local_base)
-Base = declarative_base()
+session = scoped_session(sessionmaker(bind=engine))
 
-Session = sessionmaker(bind=engine)
-session = Session()
+Base = declarative_base()
 
 def save(data):
     session.add(data)
