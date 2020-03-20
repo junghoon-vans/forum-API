@@ -6,6 +6,7 @@ from app.api.article_api import *
 
 api = ArticleDto.api
 _article = ArticleDto.article
+_content = ArticleDto.content
 
 
 @api.route('/<string:board_Name>')
@@ -27,7 +28,7 @@ class ArticleList(Resource):
 @api.route('/<string:board_Name>/detail/<int:article_id>')
 class Article(Resource):
     @api.doc('read the article')
-    @api.marshal_with(_article)
+    @api.marshal_with(_content)
     def get(self, board_Name, article_id):
         return get_article_one(board_Name, article_id)
 
