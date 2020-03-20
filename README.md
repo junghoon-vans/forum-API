@@ -130,10 +130,10 @@ API 구조
         │   │   ├── alembic.ini
         │   │   ├── app
         │   │   │   ├── __init__.py
+        │   │   │   ├── api
+        │   │   │   ├── route
         │   │   │   ├── config.py
-        │   │   │   ├── models.py
-        │   │   │   ├── controllers
-        │   │   │   └── services
+        │   │   │   └── models.py
         │   │   ├── manage.py
         │   │   ├── migrations
         │   │   │   ├── README

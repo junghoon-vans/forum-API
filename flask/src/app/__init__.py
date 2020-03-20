@@ -3,10 +3,10 @@ from flask_restplus import Api
 
 from app.config import mode
 
-from app.controllers.user_controller import api as user_ns
-from app.controllers.board_controller import api as board_ns
-from app.controllers.board_controller import api2 as dashboard_ns
-from app.controllers.article_controller import api as article_ns
+from app.route.user_route import api as user_ns
+from app.route.board_route import api as board_ns
+from app.route.board_route import api2 as dashboard_ns
+from app.route.article_route import api as article_ns
 
 def create_app(config_name):
     app = Flask(__name__)
