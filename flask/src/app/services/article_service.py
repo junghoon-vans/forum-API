@@ -28,7 +28,7 @@ def create_article(data, board_Name):
                 'status': 'fail',
                 'message': 'Permission denied'
             }
-            return response, 403
+            return response, 401
     else:
         response = {
             'status': 'fail',
@@ -56,7 +56,7 @@ def update_article(data, board_Name, article_id):
                     'status': 'fail',
                     'message': 'Permission denied'
                 }
-                return response, 403
+                return response, 401
         else:
             response = {
                 'status': 'fail',
@@ -87,7 +87,7 @@ def delete_article(board_Name, article_id):
                     'status': 'fail',
                     'message': 'Permission denied'
                 }
-                return response, 403
+                return response, 401
         else:
             response = {
                 'status': 'fail',

@@ -50,11 +50,10 @@ def create_board(name):
 
 
 def update_board(new_name, old_name):
-    board = session.query(Board).filter_by(name=name).first()
+    board = session.query(Board).filter_by(name=old_name).first()
     if board:
         if 'session' in web_session:
             user_id = redisSession.open_session(web_session['session'])
-            board = session.query(Board).filter_by(name=old_name).first()
             if board.master == int(user_id):
                 board.name = new_name
                 save(board)
@@ -68,7 +67,7 @@ def update_board(new_name, old_name):
                     'status': 'fail',
                     'message': 'Permission denied'
                 }
-                return response, 403
+                return response, 401
         else:
             response = {
                 'status': 'fail',
@@ -83,11 +82,10 @@ def update_board(new_name, old_name):
         return response, 404
 
 def delete_board(board_name):
-    board = session.query(Board).filter_by(name=name).first()
+    board = session.query(Board).filter_by(name=board_name).first()
     if board:
         if 'session' in web_session:
             user_id = redisSession.open_session(web_session['session'])
-            board = session.query(Board).filter_by(name=board_name).first()
             if board.master == int(user_id):
                 delete(board)
                 response = {
@@ -100,7 +98,7 @@ def delete_board(board_name):
                     'status': 'fail',
                     'message': 'Permission denied'
                 }
-                return response, 403
+                return response, 401
         else:
             response = {
                 'status': 'fail',

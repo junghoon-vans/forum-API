@@ -9,6 +9,10 @@ _board = BoardDto.board
 
 
 @api.route('/')
+@api.response(201, 'Create board successfully')
+@api.response(401, 'Permission denied')
+@api.response(403, 'Login required')
+@api.response(409, 'Already existed board')
 class CreateBoard(Resource):
     @api.doc('create a new board')
     @api.expect(_board, validate=True)
@@ -24,14 +28,19 @@ class BoardList(Resource):
         return get_board_list(page)
 
 @api.route('/<string:board_name>')
-class Detail(Resource):
+@api.response(401, 'Permission denied')
+@api.response(403, 'Login required')
+@api.response(404, 'Undefined board')
+class Board(Resource):
     @api.doc('update the board')
+    @api.response(200, 'Update board successfully')
     @api.expect(_board, validate=True)
     def put(self, board_name):
         data = request.json
         return update_board(data['name'], board_name)
 
     @api.doc('delete the board')
+    @api.response(200, 'Delete board successfully')
     def delete(self, board_name):
         data = request.json
         return delete_board(board_name)
