@@ -65,36 +65,43 @@ API 구조
 
 ### User API
 
-| URL | method | Usage |
-|-----|--------|-------|
-| /user/register | POST | 회원가입 |
-| /user/login | POST | 로그인 |
-| /user/logout | GET | 로그아웃 |
+| URL | method | Usage | Session Cookie |
+|-----|--------|-------|---------|
+| /user/register | POST | 회원가입 | |
+| /user/login | POST | 로그인 | 생성 |
+| /user/logout | GET | 로그아웃 | 삭제 |
 
 ### Board API
 
-| URL | method | Usage |
-|-----|--------|-------|
-| /board/ | POST | 게시판 생성 |
-| /board/\<int:page\> | GET | 게시판 목록 조회 |
-| /board/\<str:board_name\> | PUT | 게시판 이름 변경 |
-| /board/\<str:board_name\> | DELETE | 게시판 제거 |
+| URL | method | Usage | Session Cookie |
+|-----|--------|-------|---------|
+| /board/ | POST | 게시판 생성 | 필요 |
+| /board/\<int:page\> | GET | 게시판 목록 조회 | |
+| /board/\<str:board_name\> | PUT | 게시판 이름 변경 | 필요 |
+| /board/\<str:board_name\> | DELETE | 게시판 제거 | 필요 |
 
 ### BoardArticle API
 
-| URL | method | Usage |
-|-----|--------|-------|
-| /board/\<str:board_name\> | POST | 글 생성 |
-| /board/\<str:board_name\>/\<int:page\> | GET | 글 목록 조회 |
-| /board/\<str:board_name\>/detail/\<int:article_id> | GET | 글 내용 조회 |
-| /board/\<str:board_name\>/detail/\<int:article_id> | PUT | 글 제목 혹은 내용 수정 |
-| /board/\<str:board_name\>/detail/\<int:article_id> | DELETE | 글 제거 |
+| URL | method | Usage | Session Cookie |
+|-----|--------|-------|---------|
+| /board/\<str:board_name\> | POST | 글 생성 | 필요 |
+| /board/\<str:board_name\>/\<int:page\> | GET | 글 목록 조회 | |
+| /board/\<str:board_name\>/detail/\<int:article_id> | GET | 글 내용 조회 | |
+| /board/\<str:board_name\>/detail/\<int:article_id> | PUT | 글 수정 | 필요 |
+| /board/\<str:board_name\>/\<int:article_id> | DELETE | 글 제거 | 필요 |
 
 ### DashBoard API
 
-| URL | method | Usage |
-|-----|--------|-------|
-| /board/all/\<int:page\> | GET | 대시보드 조회 |
+| URL | method | Usage | Session Cookie |
+|-----|--------|-------|---------|
+| /board/all/\<int:page\> | GET | 대시보드 조회 | |
+
+세션
+---
+
+redis DB를 활용하여 세션 기능을 구현하였습니다. 사용자 로그인 시 세션에 필요한 `key`를 쿠키로 반환하며, 이는 게시판이나 게시글을 수정하는 등의 요청에 필요합니다.
+
+해당 설정은 [redis.py](flask\src\utils\redis.py) 파일에 정의되어 있습니다.
 
 
 페이지네이션
