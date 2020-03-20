@@ -6,7 +6,7 @@ from utils.sqlalchemy import engine
 from utils.redis import RedisSession
 
 from app.models import Board
-from .article_api import get_article
+from .article_api import get_article_limit
 
 
 redisSession = RedisSession()
@@ -129,7 +129,7 @@ def get_dashboard(page):
     data = dict()
     for board in get_board_list(page):
         article_list = list()
-        for article in get_article(board.name):
+        for article in get_article_limit(board.name):
             article_list.append(article.title)
         data[board.name] = article_list
     return jsonify(data)

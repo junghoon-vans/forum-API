@@ -102,10 +102,10 @@ def delete_article(board_Name, article_id):
         }
         return response, 404
 
-def get_article_one(board_Name, article_id):
-    article = session.query(Article).filter_by(board=board_Name, id=article_id).first()
-    user = session.query(User).filter_by(id=article.writer).first()
+def get_article(board_Name, article_id):
+    article = get_article_one(board_Name, article_id)
     if article:
+        user = session.query(User).filter_by(id=article.writer).first()
         data = {
             'title': article.title,
             'pub_date': article.pub_date,
@@ -120,7 +120,10 @@ def get_article_one(board_Name, article_id):
         }
         return response, 404
 
-def get_article(board_Name):
+def get_article_one(board_Name, article_id):
+    return session.query(Article).filter_by(board=board_Name, id=article_id).first()
+
+def get_article_limit(board_Name):
     return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[0:5]
 
 def get_article_list(board_Name, page):

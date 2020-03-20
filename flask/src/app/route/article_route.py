@@ -28,7 +28,7 @@ class ArticleList(Resource):
 class Article(Resource):
     @api.doc('read the article')
     def get(self, board_Name, article_id):
-        return get_article_one(board_Name, article_id)
+        return get_article(board_Name, article_id)
 
     @api.doc('update the article')
     @api.response(200, 'Update article successfully')
