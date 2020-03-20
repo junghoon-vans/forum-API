@@ -27,9 +27,3 @@ class ArticleDto():
         'title': fields.String(required=True, description='article title'),
         'content': fields.String(required=True, description='article content'),
     })
-    content = api.model('content', {
-        'title': fields.String(required=True, description='article title'),
-        'pub_date': fields.String(description='article pub_date'),
-        'writer': fields.String(description='article writer'),
-        'content': fields.String(required=True, description='article content'),
-    })

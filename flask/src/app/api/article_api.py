@@ -103,7 +103,21 @@ def delete_article(board_Name, article_id):
         return response, 404
 
 def get_article_one(board_Name, article_id):
-    return session.query(Article).filter_by(board=board_Name, id=article_id).first()
+    article = session.query(Article).filter_by(board=board_Name, id=article_id).first()
+    if article:
+        data = {
+            'title': article.title,
+            'pub_date': article.pub_date,
+            'writer': article.writer,
+            'content': article.content,
+        }
+        return jsonify(data)
+    else:
+        response = {
+            'status': 'fail',
+            'message': 'Undefined article'
+        }
+        return response, 404
 
 def get_article(board_Name):
     return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[0:5]
