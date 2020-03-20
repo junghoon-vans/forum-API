@@ -24,7 +24,7 @@ class CreateBoard(Resource):
 @api.route('/<int:page>')
 class BoardList(Resource):
     @api.doc('listview about board')
-    @api.marshal_list_with(_board, envelope='data')
+    @api.marshal_list_with(_board, mask=None)
     def get(self, page):
         return get_board_list(page)
 
