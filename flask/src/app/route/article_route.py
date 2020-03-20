@@ -21,12 +21,10 @@ class CreateArticle(Resource):
 
 @api.route('/<string:board_Name>/<int:page>')
 class ArticleList(Resource):
-    @api.doc('listview about article')
-    @api.marshal_list_with(_article)
     def get(self, board_Name, page):
         return get_article_list(board_Name, page)
 
-@api.route('/<string:board_Name>/<int:article_id>')
+@api.route('/<string:board_Name>/detail/<int:article_id>')
 class Article(Resource):
     @api.doc('read the article')
     @api.marshal_with(_article)

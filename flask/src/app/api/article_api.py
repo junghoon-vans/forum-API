@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask import session as web_session
 from utils.sqlalchemy import engine, session, save, delete
 from utils.redis import RedisSession
@@ -108,5 +109,15 @@ def get_article(board_Name):
     return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[0:5]
 
 def get_article_list(board_Name, page):
+    data = []
     offset = 5
-    return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[page*5-offset:offset*page]
+    articles = session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[page*5-offset:offset*page]
+    for article in articles:
+        info = {
+            'id': article.id,
+            'title': article.title,
+            'pub_date': article.pub_date,
+        }
+        data.append(info)
+    return jsonify(data)
+        

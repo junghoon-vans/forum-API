@@ -24,7 +24,8 @@ class DashBoardDto():
 class ArticleDto():
     api = Namespace('article', description='article related operations')
     article = api.model('article', {
-        'id': fields.Integer(required=True, description='article id'),
         'title': fields.String(required=True, description='article title'),
+        'pub_date': fields.String(description='article pub_date'),
+        'writer': fields.String(description='article writer'),
         'content': fields.String(required=True, description='article content'),
     })
