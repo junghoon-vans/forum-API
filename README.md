@@ -86,9 +86,9 @@ API 구조
 |-----|--------|-------|
 | /board/\<str:board_name\> | POST | 글 생성 |
 | /board/\<str:board_name\>/\<int:page\> | GET | 글 목록 조회 |
-| /board/\<str:board_name\>/\<int:article_id> | GET | 글 내용 조회 |
-| /board/\<str:board_name\>/\<int:article_id> | PUT | 글 제목 혹은 내용 수정 |
-| /board/\<str:board_name\>/\<int:article_id> | DELETE | 글 제거 |
+| /board/\<str:board_name\>/detail/\<int:article_id> | GET | 글 내용 조회 |
+| /board/\<str:board_name\>/detail/\<int:article_id> | PUT | 글 제목 혹은 내용 수정 |
+| /board/\<str:board_name\>/detail/\<int:article_id> | DELETE | 글 제거 |
 
 ### DashBoard API
 
