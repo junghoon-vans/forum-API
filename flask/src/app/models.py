@@ -23,7 +23,8 @@ class User(Base):
 class Board(Base):
     __tablename__ = 'board'
 
-    name = db.Column(db.String, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, unique=True)
     master = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     articles = db.orm.relationship("Article", cascade="all, delete, save-update, delete-orphan")
@@ -33,7 +34,7 @@ class Article(Base):
     __tablename__ = 'article'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    board = db.Column(db.String, db.ForeignKey('board.name'),) 
+    board = db.Column(db.Integer, db.ForeignKey('board.id')) 
     writer = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String, nullable=False)
     content = db.Column(db.String, nullable=False)
