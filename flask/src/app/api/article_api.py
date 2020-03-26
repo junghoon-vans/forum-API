@@ -3,7 +3,7 @@ from flask import session as web_session
 from utils.sqlalchemy import engine, session, save, delete
 from utils.redis import RedisSession
 
-from app.models import Article, User
+from app.models import Article, Board, User
 
 
 redisSession = RedisSession()
@@ -13,7 +13,7 @@ def create_article(data, board_Name):
         user_id = redisSession.open_session(web_session['session'])
         if user_id:
             article = Article(
-                board = board_Name,
+                board = session.query(Board).filter_by(name=board_Name).first().id,
                 writer = user_id,
                 title = data['title'],
                 content = data['content']
@@ -123,7 +123,8 @@ def get_article(board_Name, article_id):
 def get_article_list(board_Name, page):
     data = []
     offset = 5
-    articles = session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[page*5-offset:offset*page]
+    board_id = session.query(Board).filter_by(name=board_Name).first().id
+    articles = session.query(Article).filter_by(board=board_id).order_by(Article.pub_date.desc())[page*5-offset:offset*page]
     for article in articles:
         info = {
             'id': article.id,
@@ -134,7 +135,9 @@ def get_article_list(board_Name, page):
     return jsonify(data)
 
 def get_article_one(board_Name, article_id):
-    return session.query(Article).filter_by(board=board_Name, id=article_id).first()
+    board_id = session.query(Board).filter_by(name=board_Name).first().id
+    return session.query(Article).filter_by(board=board_id, id=article_id).first()
 
 def get_article_limit(board_Name):
-    return session.query(Article).filter_by(board=board_Name).order_by(Article.pub_date.desc())[0:5]
+    board_id = session.query(Board).filter_by(name=board_Name).first().id
+    return session.query(Article).filter_by(board=board_id).order_by(Article.pub_date.desc())[0:5]
