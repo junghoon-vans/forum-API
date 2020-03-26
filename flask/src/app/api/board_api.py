@@ -49,21 +49,13 @@ def create_board(name):
 
 def update_board(new_name, old_name):
     board = session.query(Board).filter_by(name=old_name).first()
-    new_board = session.query(Board).filter_by(name=new_name).first()
     if board:
-        if not new_board:
+        if not session.query(Board).filter_by(name=new_name).first():
             if 'session' in web_session:
                 user_id = redisSession.open_session(web_session['session'])
                 if board.master == int(user_id):
-                    new_board = Board(
-                        name = new_name,
-                        master = user_id
-                    )
-                    for article in board.articles:
-                        article.board = new_name
-                    save(new_board)
+                    board.name = new_name
                     save(board)
-                    delete(board)
                     response = {
                         'status': 'success',
                         'message': 'Update board successfully'
