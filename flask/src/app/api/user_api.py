@@ -12,17 +12,25 @@ redisSession = RedisSession()
 def register(data):
     user = session.query(User).filter_by(fullname=data['fullname']).first()
     if not user:
-        new_user = User(
-            fullname = data['fullname'],
-            password = data['password'],
-            email = data['email']
-        )
-        save(new_user)
-        response = {
-            'status': 'success',
-            'message': 'Successfully registered'
-        }
-        return response, 201
+        email = session.query(User).filter_by(email=data['email']).first()
+        if not email:
+            new_user = User(
+                fullname = data['fullname'],
+                password = data['password'],
+                email = data['email']
+            )
+            save(new_user)
+            response = {
+                'status': 'success',
+                'message': 'Successfully registered'
+            }
+            return response, 201
+        else:
+            response = {
+                'status': 'fail',
+                'message': 'Email already exists'
+            }
+            return response, 409
     else:
         response = {
             'status': 'fail',
