@@ -8,9 +8,11 @@ CREATE TABLE public."user" (
 );
 
 CREATE TABLE public.board (
-	"name" varchar NOT NULL,
+	id serial NOT NULL,
+	name varchar NULL,
 	master int4 NULL,
-	CONSTRAINT board_pkey PRIMARY KEY (name)
+	CONSTRAINT board_name_key UNIQUE (name),
+	CONSTRAINT board_pkey PRIMARY KEY (id)
 );
 
 
@@ -20,7 +22,7 @@ ALTER TABLE public.board ADD CONSTRAINT board_master_fkey FOREIGN KEY (master) R
 
 CREATE TABLE public.article (
 	id serial NOT NULL,
-	board varchar NULL,
+	board int4 NULL,
 	writer int4 NULL,
 	title varchar NOT NULL,
 	"content" varchar NOT NULL,
@@ -31,5 +33,5 @@ CREATE TABLE public.article (
 
 -- public.article foreign keys
 
-ALTER TABLE public.article ADD CONSTRAINT article_board_fkey FOREIGN KEY (board) REFERENCES board(name);
+ALTER TABLE public.article ADD CONSTRAINT article_board_fkey FOREIGN KEY (board) REFERENCES board(id);
 ALTER TABLE public.article ADD CONSTRAINT article_writer_fkey FOREIGN KEY (writer) REFERENCES "user"(id);
